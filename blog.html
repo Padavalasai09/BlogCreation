@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://unpkg.com/@tailwindcss/browser@4"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+
+    <title>Blogs</title>
+</head>
+<body>
+    <header>
+        <nav class="h-[200px] bg-[rgb(10,80,130)] text-center">
+            <div class="text-white font-bold font-serif pt-[100px]">
+                Enjoy millions of Blogs at your FingerPrint
+            </div>
+            <div class="h-[30px] text-center pt-5 font-bold font-[rgb(10,75,122)]">
+                <span class="font-red-500">Blogs</span>
+            </div>
+        </nav>
+    </header>
+
+    <a href="addblog.html"><button class="bg-pink-600 text-white px-4 py-2 rounded-md hover:bg-pink-700 cursor-pointer ml-[1400px] mt-[40px]" >+Add Blog</button></a>
+    <div class="cards h-full text-center p-[100px]">
+        
+        
+
+    </div>
+
+    <script>
+        
+        function getBlogsFromLocalStorage() {
+            const storedBlogs = localStorage.getItem("blogs");
+            return storedBlogs ? JSON.parse(storedBlogs) : [];
+        }
+        function saveBlogsToLocalStorage(blogs) {
+            localStorage.setItem("blogs", JSON.stringify(blogs));
+        }
+
+        function displayBlogs() {
+            const blogs = getBlogsFromLocalStorage();  
+            const blogContainer = document.querySelector(".cards");
+
+            blogContainer.innerHTML = '';
+
+            blogs.forEach((blog,index) => {
+                const card = document.createElement("div");
+                card.classList.add("card1", "w-[800px]", "h-[200px]", "mx-auto", "mb-5", "rounded-lg", "shadow-lg", "text-black-500", blog.bgColor);
+
+                const title = document.createElement("h3");
+                title.classList.add("text-2xl", "font-semibold", "mb-4");
+                title.textContent = blog.title;
+
+                const description = document.createElement("p");
+                description.classList.add("text-black-300", "text-sm", "flex-grow", "overflow-hidden", "h-[70px]", "p-2");
+                description.textContent = blog.description;
+
+                const actionsContainer = document.createElement("div");
+                actionsContainer.classList.add("flex", "justify-between", "mt-[40px]");
+
+                const viewButton = document.createElement("a");
+                viewButton.classList.add("bg-indigo-600", "text-white", "px-4", "py-2", "rounded-md", "hover:bg-indigo-700", "cursor-pointer");
+                viewButton.textContent = "View";
+                viewButton.onclick=()=>viewBlog(index);
+
+                const editButton = document.createElement("a");
+                editButton.classList.add("bg-yellow-600", "text-white", "px-4", "py-2", "rounded-md", "hover:bg-yellow-700", "cursor-pointer");
+                editButton.textContent = "Edit";
+                editButton.href="editblog";
+
+                const deleteButton = document.createElement("a");
+                deleteButton.classList.add("bg-red-600", "text-white", "px-4", "py-2", "rounded-md", "hover:bg-red-700", "cursor-pointer");
+                deleteButton.textContent = "Delete";
+
+                actionsContainer.appendChild(viewButton);
+                actionsContainer.appendChild(editButton);
+                actionsContainer.appendChild(deleteButton);
+
+                card.appendChild(title);
+                card.appendChild(description);
+                card.appendChild(actionsContainer);
+
+                blogContainer.appendChild(card);
+            });
+        }
+        function viewBlog(index){
+            const blogs=JSON.parse(localStorage.getItem("blogs")) || [];
+            // const selectedBlog=blogs[index]
+            console.log(blogs,index);
+            console.log("Blogs are printed");
+            const selectedBlog=blogs[index];
+            localStorage.setItem("selectedBlog",JSON.stringify(selectedBlog));
+            window.location="viewblog.html";
+        }
+        function addNewBlog() {
+            const newBlog = {
+                title: "Exploring the Mountains",
+                description: "Mountains have always been a source of inspiration, beauty, and adventure.",
+                bgColor: "bg-blue-800",
+                btnColors: { view: "bg-indigo-600", edit: "bg-yellow-600", delete: "bg-red-600" }
+            };
+
+            const blogs = getBlogsFromLocalStorage();
+            blogs.push(newBlog);  
+            saveBlogsToLocalStorage(blogs);
+            displayBlogs();  
+        }
+
+        window.onload = function() {
+            
+            displayBlogs(); 
+        }
+
+    </script>
+</body>
+</html>
