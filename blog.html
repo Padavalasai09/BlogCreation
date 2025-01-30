@@ -32,8 +32,13 @@
     <script>
         
         function getBlogsFromLocalStorage() {
-            const storedBlogs = localStorage.getItem("blogs") || [];
-            return JSON.parse(storedBlogs)
+            var storedBlogs = localStorage.getItem("blogs");
+            if(storedBlogs){
+                const res=JSON.parse(storedBlogs);
+                return res
+            }
+
+            return []
         }
         function saveBlogsToLocalStorage(blogs) {
             localStorage.setItem("blogs", JSON.stringify(blogs));
@@ -42,15 +47,13 @@
         function displayBlogs() {
             const blogs = getBlogsFromLocalStorage();  
             const blogContainer = document.querySelector(".cards");
-
             blogContainer.innerHTML = '';
 
             blogs.forEach((blog,index) => {
-                
                 const card = document.createElement("div");
                 const views=document.createElement("div");
                 card.classList.add("card1", "w-[800px]", "h-[220px]", "mx-auto", "mb-5", "rounded-lg", "shadow-2xl", "text-black-500");
-                views.classList.add("bg-blue-500","flex");
+                views.classList.add("bg-gray-100","flex");
                 const eyeicon=document.createElement("i");
                 const counter=document.createElement("span");
                 counter.classList.add("ml-[10px]","font-bold","text-black-500");
@@ -81,13 +84,12 @@
                 deleteButton.classList.add("bg-red-600", "text-white", "px-4", "py-2", "rounded-md", "hover:bg-red-700", "cursor-pointer");
                 deleteButton.textContent = "Delete";
                 deleteButton.onclick=()=>deleteBlog(index);
-
                 actionsContainer.appendChild(viewButton);
                 actionsContainer.appendChild(editButton);
                 actionsContainer.appendChild(deleteButton);
+                counter.textContent=blog.view_count;
                 views.appendChild(eyeicon);
                 views.appendChild(counter);
-        
                 card.appendChild(views);
                 card.appendChild(title);
                 card.appendChild(description);
@@ -98,10 +100,8 @@
         }
         function viewBlog(index){
             const blogs=JSON.parse(localStorage.getItem("blogs")) || [];
-            // const selectedBlog=blogs[index]
-            console.log(blogs,index);
-            console.log("Blogs are printed");
             const selectedBlog=blogs[index];
+            localStorage.setItem("viewedBlogIndex",index);
             localStorage.setItem("selectedBlog",JSON.stringify(selectedBlog));
             window.location="viewblog.html";
         }

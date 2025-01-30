@@ -28,26 +28,7 @@
             
                 <h1 class="innertitle text-center">Sankranti Blogs of the day</h1>
                 <div class="inner w-[1200px]  bg-gray-500 h-[800px] mx-auto mt-8 overflow-y-auto ">
-                    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Iure dolorem eius quibusdam vel tempore numquam vero quaerat quos omnis adipisci? Expedita dicta, modi ut debitis iure deleniti sequi sit provident.
-                    Vitae debitis voluptas cum fugiat! Nihil facere tempora quidem quaerat neque rerum sapiente sequi quibusdam ex saepe. Perferendis, a eligendi molestiae minus ut quidem, id quo voluptate temporibus maxime fugit?
-                    Nam blanditiis culpa tempore sint quam voluptatem harum reiciendis minima. Assumenda consectetur reprehenderit eveniet, ut quaerat recusandae aliquid officia aut sequi facere placeat laboriosam vero beatae excepturi voluptate dolores eaque.
-                    Maxime vitae culpa debitis quisquam omnis aut assumenda fugit recusandae accusantium saepe tempore nemo sequi, commodi aliquam facere, quia dolorem, natus tenetur corrupti ducimus asperiores odio praesentium aspernatur sunt. Error!
-                    Explicabo vitae aut incidunt cumque aperiam? Distinctio est excepturi sit magni dolores error nemo architecto provident cum consequatur temporibus fugit ad velit repellat, fuga minima rem ipsa sequi at. Quis!
-                    Omnis sed dolorum, ad possimus reiciendis magnam quis fugiat aperiam, quos saepe repellat obcaecati ullam dicta recusandae nisi maiores unde. Nisi obcaecati doloremque at, quasi delectus voluptas harum quibusdam quis?
-                    Aperiam sit tenetur suscipit nobis! Corporis maiores ad voluptatum beatae perferendis commodi voluptatem voluptate provident velit fugiat accusantium, obcaecati, optio nam impedit? Tempora incidunt expedita amet enim iure distinctio facilis.
-                    Facere, doloribus asperiores. Rem culpa quisquam neque quia ab, eligendi tempore. Reiciendis cumque velit nobis sit neque fugit eveniet blanditiis esse maiores quod labore vel voluptatem obcaecati, suscipit dolores totam?
-                    Eligendi eos debitis, ipsum harum, quaerat, pariatur delectus aliquid fugit nihil minus ipsam magnam nam nisi nobis porro. Officiis, ducimus. Ad dolor ex tempore quibusdam ipsum sed rerum totam ut.
-                    Iusto dolor commodi, esse distinctio officia quaerat, modi, voluptatibus aperiam vel illo sequi expedita veniam fugit culpa veritatis ratione ipsum quisquam alias doloribus explicabo autem accusamus. Sit officiis corrupti veritatis?
-                    Nobis ad aliquam magnam veritatis dicta alias vitae, sunt a ipsam rem consectetur error commodi molestiae illo maxime nesciunt, accusamus harum quo, obcaecati illum voluptatibus eum? Atque dolore dolorum fugit?
-                    Nihil et obcaecati minima, veritatis id quos est nemo! Veniam dolor quae totam harum earum libero nulla amet dolorem sapiente temporibus similique architecto placeat explicabo, ducimus laborum, ipsam, atque repudiandae.
-                    Illum nemo atque voluptas sed dolor similique inventore cumque vero quasi. Labore voluptate laboriosam dolor asperiores iste quis eum blanditiis quas, hic quasi, rem molestias. Enim ipsam ea illum! Nisi.
-                    Hic cumque doloremque sed minima nobis itaque odio amet in expedita iusto sint, quis est repellendus consequuntur laborum dolorum ipsa quos consectetur tempore earum ratione deleniti ullam corrupti. Molestias, quae?
-                    Hic consequatur porro labore incidunt iure sequi laudantium est explicabo, accusamus, non similique cum esse veritatis tempora voluptatem earum sit. Deleniti eligendi neque illum harum ducimus necessitatibus sint corrupti suscipit?
-                    Illum nobis cumque, incidunt sunt libero recusandae pariatur tempora, dolorum, dolor mollitia ducimus ex sed adipisci beatae? Officiis laboriosam provident eos illum veritatis, quos, aspernatur possimus pariatur eum nesciunt rem.
-                    Minima illum magnam eaque rem, quibusdam omnis obcaecati dolorum iste repudiandae deleniti saepe aliquid maxime dolore asperiores veniam, esse nostrum odit maiores cumque culpa, pariatur quaerat. Officia nostrum itaque obcaecati.
-                    Quia ut hic, natus impedit blanditiis eveniet? Magni odio ab dignissimos mollitia nulla, amet reiciendis illo cum rerum asperiores. Totam a officia et eaque rem perspiciatis, fugit ex minus voluptatem?
-                    Voluptatum molestiae quasi neque quibusdam error reprehenderit, quo qui rem minima eveniet et saepe cupiditate commodi eligendi, maiores omnis deserunt libero esse nobis autem, sint magni deleniti mollitia. Esse, dolore.
-                    Illo eum, necessitatibus, incidunt velit vero ducimus, eos quibusdam dicta magni blanditiis veritatis ea quam doloribus! Libero fugiat ipsum, esse sapiente, nobis illum assumenda vero consectetur aliquid praesentium, ut accusamus.
+                    
                 </div>
         
         </div>
@@ -60,6 +41,17 @@
 
         // console.log(inner);
         const selected=localStorage.getItem("selectedBlog");
+        const viewedBlogIndex=JSON.parse(localStorage.getItem("viewedBlogIndex"));
+        const blogs=JSON.parse(localStorage.getItem("blogs"));
+        for(let index=0;index<blogs.length;index++){
+            if(index==viewedBlogIndex){
+                blogs[index].view_count+=1;
+                break;
+            }
+
+        }
+        console.log(blogs);
+        localStorage.setItem("blogs",JSON.stringify(blogs));
         const data=JSON.parse(selected)
         console.log(data.description);
         inner.textContent=data.description;

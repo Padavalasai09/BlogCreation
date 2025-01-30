@@ -26,23 +26,30 @@
 <script>
     function  getBlogsFromLocalStorage(){
         const localstoragedata=localStorage.getItem("blogs");
-        if(localstoragedata){
+        console.log("data",localstoragedata);
+        if(localstoragedata!=undefined){
+        
+            console.log(JSON.parse(localstoragedata))
             return JSON.parse(localstoragedata);
         }
+       
         return []
     }
     function storeData(){
         let title=document.getElementById("title").value;
         let description=document.getElementById("description").value;
+        let view_count=0;
         console.log(title,description);
         const bloggeddata={
             title:title,
-            description:description
-        }
+            description:description,
+            view_count:view_count
+        };
+       
         const current_blogs=getBlogsFromLocalStorage();
-        console.log(current_blogs);
+        console.log("before updating",current_blogs);
         current_blogs.push(bloggeddata);
-        console.log(current_blogs);
+        console.log("after updating",current_blogs);
         localStorage.setItem("blogs",JSON.stringify(current_blogs));
         console.log(bloggeddata)
         console.log(window.location.href);
