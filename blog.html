@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://unpkg.com/@tailwindcss/browser@4"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
 
     <title>Blogs</title>
 </head>
@@ -19,7 +20,8 @@
             </div>
         </nav>
     </header>
-
+    
+    
     <a href="addblog.html"><button class="bg-pink-600 text-white px-4 py-2 rounded-md hover:bg-pink-700 cursor-pointer ml-[1400px] mt-[40px]" >+Add Blog</button></a>
     <div class="cards h-full text-center p-[100px]">
         
@@ -30,8 +32,8 @@
     <script>
         
         function getBlogsFromLocalStorage() {
-            const storedBlogs = localStorage.getItem("blogs");
-            return storedBlogs ? JSON.parse(storedBlogs) : [];
+            const storedBlogs = localStorage.getItem("blogs") || [];
+            return JSON.parse(storedBlogs)
         }
         function saveBlogsToLocalStorage(blogs) {
             localStorage.setItem("blogs", JSON.stringify(blogs));
@@ -44,9 +46,16 @@
             blogContainer.innerHTML = '';
 
             blogs.forEach((blog,index) => {
+                
                 const card = document.createElement("div");
-                card.classList.add("card1", "w-[800px]", "h-[200px]", "mx-auto", "mb-5", "rounded-lg", "shadow-lg", "text-black-500", blog.bgColor);
-
+                const views=document.createElement("div");
+                card.classList.add("card1", "w-[800px]", "h-[220px]", "mx-auto", "mb-5", "rounded-lg", "shadow-2xl", "text-black-500");
+                views.classList.add("bg-blue-500","flex");
+                const eyeicon=document.createElement("i");
+                const counter=document.createElement("span");
+                counter.classList.add("ml-[10px]","font-bold","text-black-500");
+                counter.textContent="8";
+                eyeicon.classList.add("fa","fa-eye","ml-[740px]","mt-1");
                 const title = document.createElement("h3");
                 title.classList.add("text-2xl", "font-semibold", "mb-4");
                 title.textContent = blog.title;
@@ -66,16 +75,20 @@
                 const editButton = document.createElement("a");
                 editButton.classList.add("bg-yellow-600", "text-white", "px-4", "py-2", "rounded-md", "hover:bg-yellow-700", "cursor-pointer");
                 editButton.textContent = "Edit";
-                editButton.href="editblog";
+                editButton.onclick=()=>editBlog(index);
 
                 const deleteButton = document.createElement("a");
                 deleteButton.classList.add("bg-red-600", "text-white", "px-4", "py-2", "rounded-md", "hover:bg-red-700", "cursor-pointer");
                 deleteButton.textContent = "Delete";
+                deleteButton.onclick=()=>deleteBlog(index);
 
                 actionsContainer.appendChild(viewButton);
                 actionsContainer.appendChild(editButton);
                 actionsContainer.appendChild(deleteButton);
-
+                views.appendChild(eyeicon);
+                views.appendChild(counter);
+        
+                card.appendChild(views);
                 card.appendChild(title);
                 card.appendChild(description);
                 card.appendChild(actionsContainer);
@@ -92,6 +105,13 @@
             localStorage.setItem("selectedBlog",JSON.stringify(selectedBlog));
             window.location="viewblog.html";
         }
+        function editBlog(index){
+            const blogs=JSON.parse(localStorage.getItem("blogs")) || [];
+            selectedBlog=blogs[index];
+            localStorage.setItem("editBlog",JSON.stringify(selectedBlog));
+            localStorage.setItem("editBlog_index",JSON.stringify(index));
+            window.location="editblog.html";
+        }
         function addNewBlog() {
             const newBlog = {
                 title: "Exploring the Mountains",
@@ -105,7 +125,19 @@
             saveBlogsToLocalStorage(blogs);
             displayBlogs();  
         }
+        function deleteBlog(index){
+            const blogs=JSON.parse(localStorage.getItem("blogs"));
+            var new_blogs=[];
+            for(let pos=0 ;pos<blogs.length;pos++){
+                if(pos!=index){
+                    new_blogs.push(blogs[pos]);
+                }
+            }
+            saveBlogsToLocalStorage(new_blogs);
+            window.location.reload();
+        }
 
+        
         window.onload = function() {
             
             displayBlogs(); 

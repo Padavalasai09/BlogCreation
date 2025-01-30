@@ -10,44 +10,56 @@
 <body>
     <div class="w-[500px] h-[500px] bg-gray-100 mx-auto mt-[200px] shadow-2xl">
        
-            <button class="bg-pink-600 text-white px-[200px] py-2 rounded-md hover:bg-pink-700 cursor-pointer font-bold font-poppins">Create Your Blog</button>
+            <button class="bg-pink-600 text-white px-[200px] py-2 rounded-md hover:bg-pink-700 cursor-pointer font-bold font-poppins">Edit Your Blog</button>
             <div class="pt-[50px]">
-                <label for="title" class="text-lg font-semibold focus:border-blue-700">Title</label>
-                <input type="text" name="" id="title" class=" rounded-lg focus:ring-2 focus:ring-teal-500 focus:outline-none border  border-gray-300">
+                <label for="title" class="text-lg font-semibold focus:border-blue-700" >Title</label>
+                <input type="text" name=""  class=" rounded-lg focus:ring-2 focus:ring-teal-500 focus:outline-none border  border-gray-300" id="title">
             </div>
             <div class="pt-[30px]">
-                <label for="description" class="block text-lg font-semibold">Description:</label>
-                <textarea id="description" rows="6" class="w-full h-[200px] p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-teal-500"></textarea>
-                <button type="submit" class="bg-teal-500 text-white px-6 py-3 rounded-md hover:bg-teal-600 w-full" onclick="storeData()">Submit</button>
+                <label for="description" class="block text-lg font-semibold" >Description:</label>
+                <textarea id="description" rows="6" class="w-full h-[200px] p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-teal-500" id="description"></textarea>
+                <button type="submit" class="bg-teal-500 text-white px-6 py-3 rounded-md hover:bg-teal-600 w-full" onclick="changeData()">Submit</button>
             </div>  
     
     </div>
 </body>
 <script>
-    function  getBlogsFromLocalStorage(){
-        const localstoragedata=localStorage.getItem("blogs");
-        if(localstoragedata){
-            return JSON.parse(localstoragedata);
+    
+        let title=document.getElementById("title")
+        let description=document.getElementById("description");
+        // console.log(title,description);
+        const data=JSON.parse(localStorage.getItem("editBlog"));
+        const editblog_index=JSON.parse(localStorage.getItem("editBlog_index"));
+        console.log(data,data.title);
+        title.value=data.title;
+        const blogs=JSON.parse(localStorage.getItem("blogs")) || [];
+        description.innerHTML=data.description;
+        function changeData() {
+            let new_title=title.value;
+            let new_description=description.value;
+            console.log(new_title,new_description);
+            blogs.forEach((blog,index) => {
+                console.log(editblog_index,index);
+                if(index==editblog_index){
+                    blog.title=new_title;
+                    blog.description=new_description;
+                    localStorage.setItem("blogs",JSON.stringify(blogs));
+                    console.log("IT is updated ");  
+                    window.location.href="/blog.html"
+                }
+                
+            });
+
         }
-        return []
-    }
-    function storeData(){
-        let title=document.getElementById("title").value;
-        let description=document.getElementById("description").value;
-        console.log(title,description);
-        const bloggeddata={
-            title:title,
-            description:description
-        }
-        const current_blogs=getBlogsFromLocalStorage();
-        console.log(current_blogs);
-        current_blogs.push(bloggeddata);
-        console.log(current_blogs);
-        localStorage.setItem("blogs",JSON.stringify(current_blogs));
-        console.log(bloggeddata)
-        console.log(window.location.href);
-        window.location.href="/blog.html"
+        // const current_blogs=getBlogsFromLocalStorage();
+        // console.log(current_blogs);
+        // current_blogs.push(bloggeddata);
+        // console.log(current_blogs);
+        // localStorage.setItem("blogs",JSON.stringify(current_blogs));
+        // console.log(bloggeddata)
+        // console.log(window.location.href);
+        // window.location.href="/blog.html"
         
-    }
+    
 </script>
 </html>
