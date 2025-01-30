@@ -5,144 +5,121 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://unpkg.com/@tailwindcss/browser@4"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
-
     <title>Blogs</title>
+    <style>
+        /* Custom styles for the blog cards */
+        .card1:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+        }
+        .card1 {
+            transition: transform 0.3s ease-in-out;
+        }
+    </style>
 </head>
-<body>
+<body class="bg-gray-50 font-sans">
+
+    <!-- Header Section -->
     <header>
-        <nav class="h-[200px] bg-[rgb(10,80,130)] text-center">
-            <div class="text-white font-bold font-serif pt-[100px]">
-                Enjoy millions of Blogs at your FingerPrint
-            </div>
-            <div class="h-[30px] text-center pt-5 font-bold font-[rgb(10,75,122)]">
-                <span class="font-red-500">Blogs</span>
+        <nav class="bg-blue-800 text-white text-center py-16">
+            <h1 class="text-4xl font-bold font-serif">Enjoy millions of Blogs at your Fingerprint</h1>
+            <div class="mt-4 text-2xl font-semibold text-blue-200">
+                <span>Blogs</span>
             </div>
         </nav>
     </header>
-    
-    
-    <a href="addblog.html"><button class="bg-pink-600 text-white px-4 py-2 rounded-md hover:bg-pink-700 cursor-pointer ml-[1400px] mt-[40px]" >+Add Blog</button></a>
-    <div class="cards h-full text-center p-[100px]">
-        
-        
 
+    <!-- Add Blog Button -->
+    <a href="addblog.html">
+        <button class="bg-pink-600 text-white px-6 py-3 rounded-md hover:bg-pink-700 cursor-pointer mt-8 ml-auto block mr-8">
+            + Add Blog
+        </button>
+    </a>
+    <div class="cards grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 p-8">
     </div>
 
     <script>
-        
         function getBlogsFromLocalStorage() {
             var storedBlogs = localStorage.getItem("blogs");
             if(storedBlogs){
-                const res=JSON.parse(storedBlogs);
-                return res
+                return JSON.parse(storedBlogs);
             }
-
-            return []
+            return [];
         }
+
         function saveBlogsToLocalStorage(blogs) {
             localStorage.setItem("blogs", JSON.stringify(blogs));
         }
-
         function displayBlogs() {
             const blogs = getBlogsFromLocalStorage();  
             const blogContainer = document.querySelector(".cards");
-            blogContainer.innerHTML = '';
+            blogContainer.innerHTML = '';  
 
-            blogs.forEach((blog,index) => {
+            blogs.forEach((blog, index) => {
                 const card = document.createElement("div");
-                const views=document.createElement("div");
-                card.classList.add("card1", "w-[800px]", "h-[220px]", "mx-auto", "mb-5", "rounded-lg", "shadow-2xl", "text-black-500");
-                views.classList.add("bg-gray-100","flex");
-                const eyeicon=document.createElement("i");
-                const counter=document.createElement("span");
-                counter.classList.add("ml-[10px]","font-bold","text-black-500");
-                counter.textContent="8";
-                eyeicon.classList.add("fa","fa-eye","ml-[740px]","mt-1");
+                card.classList.add("card1", "bg-white", "rounded-lg", "shadow-lg", "p-5", "text-black", "transition-transform");
+
                 const title = document.createElement("h3");
-                title.classList.add("text-2xl", "font-semibold", "mb-4");
+                title.classList.add("text-xl", "font-semibold", "mb-4", "text-gray-900");
                 title.textContent = blog.title;
 
                 const description = document.createElement("p");
-                description.classList.add("text-black-300", "text-sm", "flex-grow", "overflow-hidden", "h-[70px]", "p-2");
+                description.classList.add("text-gray-700", "text-sm", "h-24", "overflow-hidden", "mb-4");
                 description.textContent = blog.description;
 
                 const actionsContainer = document.createElement("div");
-                actionsContainer.classList.add("flex", "justify-between", "mt-[40px]");
+                actionsContainer.classList.add("flex", "gap-4");
 
                 const viewButton = document.createElement("a");
                 viewButton.classList.add("bg-indigo-600", "text-white", "px-4", "py-2", "rounded-md", "hover:bg-indigo-700", "cursor-pointer");
                 viewButton.textContent = "View";
-                viewButton.onclick=()=>viewBlog(index);
+                viewButton.onclick = () => viewBlog(index);
 
                 const editButton = document.createElement("a");
                 editButton.classList.add("bg-yellow-600", "text-white", "px-4", "py-2", "rounded-md", "hover:bg-yellow-700", "cursor-pointer");
                 editButton.textContent = "Edit";
-                editButton.onclick=()=>editBlog(index);
+                editButton.onclick = () => editBlog(index);
 
                 const deleteButton = document.createElement("a");
                 deleteButton.classList.add("bg-red-600", "text-white", "px-4", "py-2", "rounded-md", "hover:bg-red-700", "cursor-pointer");
                 deleteButton.textContent = "Delete";
-                deleteButton.onclick=()=>deleteBlog(index);
+                deleteButton.onclick = () => deleteBlog(index);
+
                 actionsContainer.appendChild(viewButton);
                 actionsContainer.appendChild(editButton);
                 actionsContainer.appendChild(deleteButton);
-                counter.textContent=blog.view_count;
-                views.appendChild(eyeicon);
-                views.appendChild(counter);
-                card.appendChild(views);
+
                 card.appendChild(title);
                 card.appendChild(description);
                 card.appendChild(actionsContainer);
-
                 blogContainer.appendChild(card);
             });
         }
-        function viewBlog(index){
-            const blogs=JSON.parse(localStorage.getItem("blogs")) || [];
-            const selectedBlog=blogs[index];
-            localStorage.setItem("viewedBlogIndex",index);
-            localStorage.setItem("selectedBlog",JSON.stringify(selectedBlog));
-            window.location="viewblog.html";
-        }
-        function editBlog(index){
-            const blogs=JSON.parse(localStorage.getItem("blogs")) || [];
-            selectedBlog=blogs[index];
-            localStorage.setItem("editBlog",JSON.stringify(selectedBlog));
-            localStorage.setItem("editBlog_index",JSON.stringify(index));
-            window.location="editblog.html";
-        }
-        function addNewBlog() {
-            const newBlog = {
-                title: "Exploring the Mountains",
-                description: "Mountains have always been a source of inspiration, beauty, and adventure.",
-                bgColor: "bg-blue-800",
-                btnColors: { view: "bg-indigo-600", edit: "bg-yellow-600", delete: "bg-red-600" }
-            };
 
+        function viewBlog(index) {
             const blogs = getBlogsFromLocalStorage();
-            blogs.push(newBlog);  
+            const selectedBlog = blogs[index];
+            localStorage.setItem("viewedBlogIndex", index);
+            localStorage.setItem("selectedBlog", JSON.stringify(selectedBlog));
+            window.location = "viewblog.html";
+        }
+
+        function editBlog(index) {
+            const blogs = getBlogsFromLocalStorage();
+            const selectedBlog = blogs[index];
+            localStorage.setItem("editBlog", JSON.stringify(selectedBlog));
+            localStorage.setItem("editBlog_index", index);
+            window.location = "editblog.html";
+        }
+        function deleteBlog(index) {
+            const blogs = getBlogsFromLocalStorage();
+            blogs.splice(index, 1);
             saveBlogsToLocalStorage(blogs);
-            displayBlogs();  
+            displayBlogs();
         }
-        function deleteBlog(index){
-            const blogs=JSON.parse(localStorage.getItem("blogs"));
-            var new_blogs=[];
-            for(let pos=0 ;pos<blogs.length;pos++){
-                if(pos!=index){
-                    new_blogs.push(blogs[pos]);
-                }
-            }
-            saveBlogsToLocalStorage(new_blogs);
-            window.location.reload();
-        }
-
-        
         window.onload = function() {
-            
-            displayBlogs(); 
-        }
-
+            displayBlogs();
+        };
     </script>
 </body>
 </html>

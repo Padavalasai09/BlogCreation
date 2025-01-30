@@ -3,62 +3,51 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src="https://unpkg.com/@tailwindcss/browser@4"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
     <title>Blogs</title>
 </head>
-<body>
-    <header>
-        
-        <nav class="h-[200px] bg-[rgb(10,80,130)] text-center">
-            <div class="text-white font-bold font-serif pt-[100px]">
-                Enjoy millions of Blogs at your FingerPrint
-            </div>
-            <div class="h-[30px] text-center pt-5 font-bold font-[rgb(10,75,122)]">
-                <span class="font-red-500">Blogs</span>
-            </div>
-
-        </nav>
-    </header>
-    <div class="h-screen w-[1500px] bg-gray-100 mx-auto ">
-        <marquee behavior="scroll" direction="left">
-            <h1 class="text-semibold text-yellow-500">Trending Blogs </h1>
-        </marquee>
-        <div class="main text-lg ">
-            
-                <h1 class="innertitle text-center">Sankranti Blogs of the day</h1>
-                <div class="inner w-[1200px]  bg-gray-500 h-[800px] mx-auto mt-8 overflow-y-auto ">
-                    
-                </div>
-        
+<body class="bg-gray-100 text-gray-900">
+    <header class="bg-blue-900 text-white py-10 text-center">
+        <h1 class="text-3xl font-bold font-serif">Enjoy Millions of Blogs at Your Fingertips</h1>
+        <div class="mt-2 text-lg font-semibold">
+            <span class="text-red-500">Blogs</span>
         </div>
+    </header>
 
+    <div class="max-w-4xl mx-auto my-8 p-6 bg-white shadow-lg rounded-lg">
+        <marquee behavior="scroll" direction="left" class="text-lg font-semibold text-yellow-500 mb-4">
+            Trending Blogs
+        </marquee>
+
+        <h1 class="h1 text-center text-2xl font-bold text-blue-700 mb-4" id="h1">Sankranti Blogs of the Day</h1>
+
+        <div class="bg-gray-200 p-6 rounded-lg shadow-md h-[500px] overflow-y-auto">
+            <p class="text-lg text-gray-800 font-medium" id="blog-content"></p>
+        </div>
     </div>
-    <script>
-        const maindiv=document.querySelector(".main");
-        const inner=document.querySelector(".inner");
-        const innertitle=document.querySelector(".innertitle");
 
-        // console.log(inner);
-        const selected=localStorage.getItem("selectedBlog");
-        const viewedBlogIndex=JSON.parse(localStorage.getItem("viewedBlogIndex"));
-        const blogs=JSON.parse(localStorage.getItem("blogs"));
-        for(let index=0;index<blogs.length;index++){
-            if(index==viewedBlogIndex){
-                blogs[index].view_count+=1;
+    <script>
+        const blogContent = document.getElementById("blog-content");
+        const pageTitle = document.getElementById("h1");
+
+        const selected = localStorage.getItem("selectedBlog");
+        const viewedBlogIndex = JSON.parse(localStorage.getItem("viewedBlogIndex"));
+        const blogs = JSON.parse(localStorage.getItem("blogs"));
+
+        for (let index = 0; index < blogs.length; index++) {
+            if (index === viewedBlogIndex) {
+                blogs[index].view_count += 1;
                 break;
             }
-
         }
-        console.log(blogs);
-        localStorage.setItem("blogs",JSON.stringify(blogs));
-        const data=JSON.parse(selected)
-        console.log(data.description);
-        inner.textContent=data.description;
-        innertitle.textContent=data.title;
 
+        localStorage.setItem("blogs", JSON.stringify(blogs));
+        const data = JSON.parse(selected);
+        console.log(data);
+        pageTitle.textContent = data.title;
+        blogContent.textContent = data.description;
     </script>
-    
-</body>
 
+</body>
 </html>
